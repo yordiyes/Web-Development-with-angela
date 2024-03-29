@@ -14,4 +14,4 @@ function leapYear(year){
         console.log(year + " is not leap year.");
     }
 }
-leapYear(2100);
+leapYear(2024);

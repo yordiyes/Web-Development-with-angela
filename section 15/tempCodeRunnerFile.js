@@ -1,2 +1,2 @@
-ompt("what is your name?");
-// prompt("what is your lover's name?");
+let names = ["Angela","Ben","abebe","michael","Rout"];
+let len = names.length;
