@@ -1,3 +1,7 @@
 h1{
     color: blue;
 }
+button{
+    background-color: lightgray;
+    border: 0.3 solid rgb(198, 35, 35);
+}
