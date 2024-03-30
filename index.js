@@ -4,6 +4,8 @@ var thirdList = document.getElementsByClassName("list");
 var body = document.querySelector("body");
 var listAnchor = document.querySelector("li a");
 
+button.style.backgroundColor = "yellow";
+
 button.addEventListener("click", function(){
     h2.innerText = "Ma Men You Have clicked the button";
     thirdList[2].innerText = "Yordanos Yeshitla";
