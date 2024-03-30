@@ -8,9 +8,10 @@ button.style.backgroundColor = "yellow";
 
 button.addEventListener("click", function(){
     h2.innerText = "Ma Men You Have clicked the button";
-    thirdList[2].innerText = "Yordanos Yeshitla";
+    thirdList[2].innerText = "You have changed me by the button";
     body.style.backgroundColor = "lightblue";
     listAnchor.style.color = "red";
+
 });
 
 var check = document.querySelector("input");
@@ -22,3 +23,7 @@ check.addEventListener("change", function(){
     }
 })
 
+// var h1 = document.querySelector("h1");
+// h1.classList.add("huge");
+var anchorFirst = document.querySelector("a");
+anchorFirst.setAttribute("href","https://www.bing.com");
