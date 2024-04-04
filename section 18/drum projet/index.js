@@ -3,13 +3,17 @@ var len = document.querySelectorAll(".drum").length
 for(var i=0; i < len ;i++){
     document.querySelectorAll("button")[i].addEventListener("click",function (){
         var buttonInnerHtml = this.innerHTML;
+
         makeSound(buttonInnerHtml);
+        buttonAnimation(buttonInnerHtml);
         }
-    )}
+    );
+}
 
 //The function below listen to ley press events
 document.addEventListener("keypress",function(event){
     makeSound(event.key);
+    buttonAnimation(event.key);
 })
 
 function makeSound(key){
@@ -46,3 +50,11 @@ function makeSound(key){
             console.log(key);
     }
 }
+
+function buttonAnimation(currentKey){
+    var activeButton = document.querySelector("."+ currentKey);
+    activeButton.classList.add("pressed");
+    setTimeout(function(){
+        activeButton.classList.remove("pressed");
+    }, 120);
+} 
