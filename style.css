@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    padding: 0 auto;
+    padding-top: 30px;
+    width: 400px;
+    height: 200px;
+    margin: 100px auto 0 auto;
+    text-align: center;
+    background-color: aliceblue;
+    border-radius: 1em;
+}
+.containerTwo{
+    padding: 300px auto 0 auto;
+}
+input{
+    margin: 20px 0 0 0 ;
+}
+.submit{
+    color: gray;
+    background-color: white;
+    width: 60px;
+    border: 1px solid red;
+}
