@@ -1,0 +1,2 @@
+Hello from Jordi.
+This one is another added message to the message text file 
