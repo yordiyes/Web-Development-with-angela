@@ -1,0 +1,14 @@
+This is a note about the bash CMD line inteface :
+1, The first thing that i have learned in this lesson is that as a developer i have to now how to manipulate folders and files 
+using the command line interface.
+2, The "ls" command which is used to list all the directories and also files inside the specified 
+directory.
+3, The "cd" command which is used to change director.
+4, The "pwd" command that is used to know the current working directory.
+5, The "mkdir" command that is used to make or create directory.
+6, The "rm -r" command that is used to remove or delete a directory.
+7, The "touch" command which is used to create a file with the specified extension. like touch text.text.
+8, The "rm" command which is used to remove a file.
+9, The "start" commad that is used to start or open the specified file.
+    this commad also can be used with the respectve software or application that we wanna open the file. for example:-
+    code start text.txt - this will open the text file inside the vs-code app
