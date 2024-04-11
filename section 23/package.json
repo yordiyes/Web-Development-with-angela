@@ -1,13 +1,7 @@
 {
   "type": "module",
-  "name": "section-23",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Yordanos",
-  "license": "ISC"
+  "dependencies": {
+    "inquirer": "^9.2.17",
+    "qr-image": "^3.2.0"
+  }
 }
