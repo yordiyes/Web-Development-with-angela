@@ -1,26 +1,32 @@
 import express from "express";
+import bodyParser from "body-parser";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 const port = 3000;
+var name = "";
+
+app.use(bodyParser.urlencoded({extended: true}));
+
+function birthdayWish(req, res, next){
+  console.log(req.body);
+  name = req.body["name"];
+  next();
+}
+
+app.use(birthdayWish);
 
 app.get("/", (req, res)=>{
-    res.send("<h1>Hey Jordi</h1><p>Hello everyone am yordanos and there is something i wanna share with you guys.</p>");
+  res.sendFile(__dirname + "/public/index.html");
 })
 
-app.post("/about", (req, res)=>{
-    res.sendStatus(200);
+app.post("/submit",(req, res)=>{
+  res.send(`<h1>Happy Birthday ${name} ✌.</h1>`);
 })
 
-app.put("/some/info", (req,res)=>{
-    res.sendStatus(201);
-})
-
-app.patch("/patch", (req, res)=>{
-    res.sendStatus(200);
-})
-app.delete("/delete", (req, res)=>{
-    res.sendStatus(200);
-})
-
-app.listen(port, ()=>{
-    console.log(`New server is created on port ${port}`);
-})
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
