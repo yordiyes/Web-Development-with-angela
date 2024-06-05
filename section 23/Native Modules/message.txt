@@ -1,2 +1,1 @@
-Hello from Jordi.
-This one is another added message to the message text file 
+This is also another text added to the file using node
