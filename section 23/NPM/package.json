@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "sillyname": "^0.1.0",
+    "superhero": "^2.14.24",
     "superheroes": "^3.0.0"
   }
 }
