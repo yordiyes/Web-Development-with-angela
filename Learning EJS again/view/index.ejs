@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bored Activities</title>
+</head>
+<body>
+    <h1>Random Activity</h1>
+    <% if (data) { %>
+        <p><%= data.activity %></p>
+    <% } else if (error) { %>
+        <p>Error: <%= error %></p>
+    <% } %>
+    
+    <form action="/" method="POST">
+        <label for="type">Activity Type:</label>
+        <input type="text" name="type" id="type" required>
+        
+        <label for="participants">Number of Participants:</label>
+        <input type="number" name="participants" id="participants" required>
+        
+        <button type="submit">Get Activity</button>
+    </form>
+</body>
+</html>
