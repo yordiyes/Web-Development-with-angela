@@ -13,6 +13,7 @@ html {
 body {
   font-family: monospace;
   height: 100%;
+  background-color: rgb(98, 111, 107);
 }
 h1 {
   width: 100%;
