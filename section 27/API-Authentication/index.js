@@ -3,13 +3,15 @@ import axios from "axios";
 
 const app = express();
 const port = 3000;
-const API_URL = "https://secrets-api.appbrewery.com/";
+const API_URL = "https://secrets-api.appbrewery.com";
 
 //TODO 1: Fill in your values for the 3 types of auth.
 const Username = "yo";
 const Password = "ya";
-const APIKey = "e0f8c7ce-7943-4a0b-9b08-0fa5a1797263";
-const BearerToken = "e176984a-9a98-42e4-bc9b-aae28f4252aa";
+const APIKey = "632fbf3a-db18-47c1-9260-df210c9650b5";
+const BearerToken = "755d46d1-2d4a-43dc-a96e-593857c176df";
+
+app.set("view engine", "ejs")
 
 app.get("/", (req, res) => {
   res.render("index.ejs", { content: "API Response." });
@@ -36,7 +38,7 @@ app.get("/basicAuth", async(req, res) => {
     })
     res.render("index.ejs", {content: JSON.stringify(response.data)})
   }catch(error){
-    console.log(error.message)
+    res.status(404).send(error.message)
   }
 });
 
