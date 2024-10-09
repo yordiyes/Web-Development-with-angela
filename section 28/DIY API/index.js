@@ -8,21 +8,32 @@ const masterKey = "4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT";
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //1. GET a random joke  
-app.get("/random", (req, res)=>{
-  const randomindex = Math.floor(Math.random() * jokes.length);
-  res.json(jokes[randomindex ])
+app.get("/random", (req,res)=>{
+  const randomIndex = Math.floor(Math.random() * jokes.length)
+  res.json(jokes[randomIndex])
 })
 //2. GET a specific joke
 app.get("/jokes/:id", (req, res)=>{
-  const id = parseInt(req.params.id);
-  const foundJoke = jokes.find((joke)=> joke.id === id)
-  res.json(foundJoke)
-})
-
+  const Id = parseInt(req.params.id);
+  const foundJoke = jokes.find((joke) => joke.id === Id);
+  res.json(foundJoke )
+}) 
 //3. GET a jokes by filtering on the joke type
-
+app.get("/filter", (req, res)=>{
+  const type = req.query.type;
+  const filteredJoke = jokes.filter((joke) => joke.jokeType === type);
+  res.json(filteredJoke) 
+})
 //4. POST a new joke
-
+app.post("/jokes", (req, res)=>{
+  const newJoke = {
+    id: jokes.length + 1,
+    jokeText: req.body.text,
+    jokeType: req.body.type,
+  };
+  jokes.push(newJoke);
+  res.json(newJoke)
+})
 //5. PUT a joke
 
 //6. PATCH a joke
@@ -32,7 +43,7 @@ app.get("/jokes/:id", (req, res)=>{
 //8. DELETE All jokes
 
 app.listen(port, () => {
-  console.log(`Successfully started server on port ${port}.`);
+  console.log(`Successfully started server on port http://localhost:/${port}.`);
 });
 
 var jokes = [
