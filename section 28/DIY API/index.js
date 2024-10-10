@@ -65,8 +65,26 @@ app.patch("/jokes/:id", (req, res) => {
 
 })
 //7. DELETE Specific joke
-
+  app.delete("/jokes/:id", (req, res) =>{
+  const Id = parseInt(req.params.id);
+  if(Id !== -1){
+    jokes.splice(Id, 1)
+    res.sendStatus(200)
+  }else{
+    res.status(404).json({error: `joke with id: ${Id} not found.
+      no jokes were deleted.`})
+  }
+})
 //8. DELETE All jokes
+app.delete("/all", (req, res) =>{
+  const key = req.params.key;
+  if(key === masterKey){
+    jokes = []
+    res.sendStatus(200)
+  }else{
+    res.status(404).json({error: "You are not allowed to do this ask for this kind of request."})
+  }
+})
 
 app.listen(port, () => {
   console.log(`Successfully started server on port http://localhost:/${port}.`);
