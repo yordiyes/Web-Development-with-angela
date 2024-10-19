@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { log } = require("console");
 
 
 const app = express();
@@ -25,31 +26,59 @@ const userSchema = {
 
 const user = new mongoose.model("User", userSchema);
 
-app.get("/", function(req, res){
+app.get("/", (req, res)=> {
     res.render("home");
 })
 
-app.get("/login", function(req, res){
+app.get("/login", (req, res) =>{
     res.render("login");
 })
 
-app.get("/register", function(req, res){
+app.get("/register", (req, res) =>{
     res.render("register");
 })
 
-app.post("/register"), function(req, res){
-    const newUser = new User({
+app.post("/register", (req, res) =>{
+    const newUser = new user({
         email: req.body.username,
         password: req.body.password
     });
 
-    newUser.save(function(err){
-        if(err)
+    newUser.save()
+        .then(() => {
+            res.render("Secrets"); // Assuming you have a 'Secrets' page
+        })
+        .catch(err => {
             console.log(err);
-        else
-            res.render("Secrets");
-    })
-}
+            res.status(500).send("Error saving user"); // Send an error response
+        });
+})
+
+app.post("/login", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    user.findOne({ email: username })
+        .then((foundUser) => {
+            if (foundUser) {
+                if (foundUser.password === password) {
+                    res.render("Secrets"); 
+                } else {
+                    res.status(401).send("Incorrect password.");
+                }
+            } else {
+                res.status(404).send("User not found.");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send("Error logging in."); 
+        });
+});
+
+app.get("/logout", (req, res)=>{
+    res.redirect("/")
+})
 
 app.listen(3000, function(){
     console.log("Server started on http://localhost:3000")
