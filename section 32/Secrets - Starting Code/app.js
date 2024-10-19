@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption")
 const { log } = require("console");
 
 
@@ -11,7 +12,7 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect("mongodb://localhost:27017/userDb")
+mongoose.connect("mongodb://127.0.0.1:27017/userDb")
     .then(()=>{
         console.log("Connected to MongoDB");
     })
@@ -19,10 +20,13 @@ mongoose.connect("mongodb://localhost:27017/userDb")
         console.error("Error connecting to MongoDB:", error)
     })
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
     email: String,
     password: String
-}
+})
+
+const secret = "Thisisourlittlesecret.";
+userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"] })
 
 const user = new mongoose.model("User", userSchema);
 
