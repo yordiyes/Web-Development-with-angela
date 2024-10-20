@@ -37,7 +37,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/userDb")
 const userSchema = new mongoose.Schema({
     email: String,
     password: String, 
-    googleId: Stringadd
+    googleId: String,
+    secret: String
 })
 
 userSchema.plugin(passportLocalMongoose);
@@ -98,6 +99,27 @@ app.get("/login", (req, res) =>{
 app.get("/register", (req, res) =>{
     res.render("register");
 })
+
+app.get("/secrets", (req, res) => {
+    user.find({"secret": {$ne: null}})
+        .then((foundUsers) => {
+            if (foundUsers) {
+                res.render("secrets", {usersWithSecrets: foundUsers});
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+
+app.get("/submit", (req, res)=>{
+    if(req.isAuthenticated()){
+        res.render("submit");
+    }else{
+        res.redirect("/login");
+    }
+})
  
 app.get("/logout", (req, res)=>{
     req.logOut((err)=>{
@@ -105,14 +127,6 @@ app.get("/logout", (req, res)=>{
     });
     res.redirect("/");
 });
-
-app.get("/secrets", (req, res)=>{
-    if(req.isAuthenticated()){
-        res.render("secrets");
-    }else{
-        res.redirect("/login");
-    }
-})
 
 app.post("/register", (req, res) =>{
     user.register({username: req.body.username}, req.body.password, (err, user)=>{
@@ -142,6 +156,29 @@ app.post("/login", (req, res) => {
             });
         }
     }); 
+});
+
+app.post("/submit", (req, res) => {
+    const submittedSecret = req.body.secret;
+
+    user.findById(req.user.id)
+        .then((foundUser) => {
+            if (foundUser) {
+                foundUser.secret = submittedSecret;
+
+                return foundUser.save(); // Return the promise from save()
+            } else {
+                console.log("User not found.");
+                res.redirect("/submit");
+            }
+        })
+        .then(() => {
+            res.redirect("/secrets"); // Redirect after saving
+        })
+        .catch((err) => {
+            console.log(err);
+            res.redirect("/submit"); // Redirect in case of an error
+        });
 });
 
 app.listen(3000, function(){
