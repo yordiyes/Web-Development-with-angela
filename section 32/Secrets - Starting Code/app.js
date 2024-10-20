@@ -3,7 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const md5 = require("md5");
+const bcrypt = require("bcrypt")
+const saltRound = 10
 
 const app = express();
 
@@ -40,33 +41,37 @@ app.get("/register", (req, res) =>{
 })
 
 app.post("/register", (req, res) =>{
-    const newUser = new user({
-        email: req.body.username,
-        password: md5(req.body.password)
-    });
+    bcrypt.hash(req.body.password, saltRound, (err, hash) =>{
+        const newUser = new user({
+                email: req.body.username,
+                password: hash
+            });
 
-    newUser.save()
-        .then(() => {
-            res.render("Secrets"); // Assuming you have a 'Secrets' page
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send("Error saving user"); // Send an error response
-        });
+        newUser.save()
+            .then(() => {
+                res.render("Secrets"); // Assuming you have a 'Secrets' page
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send("Error saving user"); // Send an error response
+            }); 
+    })
 })
 
 app.post("/login", (req, res) => {
     const username = req.body.username;
-    const password = md5(req.body.password);
+    const password = req.body.password;
 
     user.findOne({ email: username })
         .then((foundUser) => {
             if (foundUser) {
-                if (foundUser.password === password) {
-                    res.render("Secrets"); 
-                } else {
-                    res.status(401).send("Incorrect password.");
-                }
+                bcrypt.compare(password, foundUser.password, (err, result) =>{
+                    if(result === true)
+                        res.render("Secrets"); 
+                    else{
+                        res.send("Incorrect Password");
+                    }
+                });
             } else {
                 res.status(404).send("User not found.");
             }
