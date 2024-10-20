@@ -7,6 +7,8 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
 const { error } = require("console");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require('mongoose-findorcreate')
 
 
 const app = express();
@@ -34,21 +36,60 @@ mongoose.connect("mongodb://127.0.0.1:27017/userDb")
 
 const userSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String, 
+    googleId: Stringadd
 })
 
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 const user = new mongoose.model("User", userSchema);
 
 passport.use(user.createStrategy());
 
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+        return cb(null, {
+            id: user.id,
+            username: user.username
+        });
+    });
+});
+
+passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+});
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile)
+    user.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 app.get("/", (req, res)=> {
     res.render("home");
 })
+
+app.get("/auth/google",
+    passport.authenticate("google", { scope: ['profile'] })
+);
+
+app.get("/auth/google/secrets", 
+    passport.authenticate("google", { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect('/secrets');
+    });
 
 app.get("/login", (req, res) =>{
     res.render("login");
